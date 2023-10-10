@@ -23,7 +23,10 @@ const UserSchema = new mongoose.Schema(
             default: false
         },
         confirmed_hash: String,
-        last_seen: Date,
+        last_seen: {
+            type: Date,
+            default: new Date()
+        },
     },
     {
         timestamps: true
