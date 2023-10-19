@@ -1,11 +1,14 @@
 import express from "express";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
+import dotenv from 'dotenv';
 
 import { UserController, DialogController, MessageController } from "./controllers";
-import { updateLastSeen } from "./middlewares";
+import { updateLastSeen, checkAuth } from "./middlewares";
 
 const app = express();
+dotenv.config();
+
 app.use(bodyParser.json());
 app.use(updateLastSeen);
 
@@ -21,6 +24,7 @@ mongoose
 app.get('/user/:id', User.index);
 app.delete('/user/:id', User.delete);
 app.post('/user/registration', User.create);
+app.post("/user/login", User.login);
 
 app.get('/dialogs', Dialog.index);
 app.delete('/dialogs/:id', Dialog.delete);
@@ -30,6 +34,6 @@ app.get('/messages', Message.index);
 app.delete('/messages/:id', Message.delete);
 app.post('/messages', Message.create);
   
-app.listen(3333, () => {
-    console.log(`Example app listening on port 3333`)
+app.listen(process.env.PORT, () => {
+    console.log(`Example app listening on port ${process.env.PORT}`)
 });

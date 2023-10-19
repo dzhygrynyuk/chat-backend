@@ -1,6 +1,16 @@
 import mongoose from "mongoose";
 import isEmail from "validator/lib/isEmail";
 
+export interface IUser extends Document {
+    email: string;
+    fullname: string;
+    password: string;
+    confirmed: boolean;
+    avatar?: string;
+    confirm_hash?: string;
+    last_seen?: Date;
+}
+
 const UserSchema = new mongoose.Schema(
     {
         email: {
