@@ -5,12 +5,14 @@ import dotenv from 'dotenv';
 
 import { UserController, DialogController, MessageController } from "./controllers";
 import { updateLastSeen, checkAuth } from "./middlewares";
+import { loginValidation } from './utils/validations';
 
 const app = express();
 dotenv.config();
 
 app.use(bodyParser.json());
 app.use(updateLastSeen);
+app.use(checkAuth);
 
 const User = new UserController();
 const Dialog = new DialogController();
@@ -24,7 +26,7 @@ mongoose
 app.get('/user/:id', User.index);
 app.delete('/user/:id', User.delete);
 app.post('/user/registration', User.create);
-app.post("/user/login", User.login);
+app.post("/user/login", loginValidation, User.login);
 
 app.get('/dialogs', Dialog.index);
 app.delete('/dialogs/:id', Dialog.delete);

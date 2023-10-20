@@ -19,7 +19,6 @@ const UserSchema = new mongoose.Schema(
             validate: [isEmail, "Invalid email"],
             unique: true
         },
-        avatar: String,
         fullname: {
             type: String,
             required: "Fullname is required"
@@ -32,6 +31,7 @@ const UserSchema = new mongoose.Schema(
             type: Boolean,
             default: false
         },
+        avatar: String,
         confirmed_hash: String,
         last_seen: {
             type: Date,
