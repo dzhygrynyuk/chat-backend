@@ -1,5 +1,6 @@
 import express from "express";
 import { validationResult } from "express-validator";
+import bcrypt from 'bcrypt';
 
 import { UserModel } from "../models";
 import { createJWToken } from "../utils";
