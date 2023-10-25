@@ -23,6 +23,7 @@ mongoose
     .then(() => console.log('Success connected!!!'))
     .catch((err) => console.log('DB error', err));
 
+app.get('/user/me', User.getMe);
 app.get('/user/:id', User.index);
 app.delete('/user/:id', User.delete);
 app.post('/user/registration', User.create);

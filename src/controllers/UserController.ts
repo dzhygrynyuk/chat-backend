@@ -18,6 +18,18 @@ class UserController {
         }
     }
 
+    async getMe(req:any, res: express.Response) {
+        const id = req.user._id;
+        try {
+            const user = await UserModel.findById(id);
+            res.json(user);
+        } catch (err) {
+            return res.status(404).json({
+                messages: "User not found."
+            });
+        }
+    }
+
     create(req: express.Request, res: express.Response) {
         const postData = {
             email: req.body.email,
