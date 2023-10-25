@@ -2,8 +2,8 @@ import express from 'express';
 import { DialogModel, MessageModel } from '../models';
 
 class DialogController{
-    async index(req: express.Request, res: express.Response){
-        const authorId = '6522ca2535354e9565a022d0';
+    async index(req: any, res: express.Response){
+        const authorId = req.user._id;
         try{
             const dialogs = await DialogModel.find({ author: authorId }).populate(['author', 'partner']).exec();
             res.json(dialogs);

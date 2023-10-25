@@ -65,7 +65,7 @@ class UserController {
         try {
             const user: any = await UserModel.findOne({ email: postData.email });
 
-            if (user && user.password === postData.password) {
+            if (user && bcrypt.compareSync(postData.password, user.password)) {
                 const token = createJWToken(user);
                 res.json({
                     status: "success",
