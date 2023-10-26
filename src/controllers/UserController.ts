@@ -1,11 +1,18 @@
 import express from "express";
 import { validationResult } from "express-validator";
 import bcrypt from 'bcrypt';
+import socket from "socket.io";
 
 import { UserModel } from "../models";
 import { createJWToken } from "../utils";
 
 class UserController {
+    io: socket.Server;
+
+    constructor(io: socket.Server) {
+        this.io = io;
+    }
+
     async index(req: express.Request, res: express.Response) {
         const id = req.params.id;
         try {

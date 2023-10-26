@@ -1,7 +1,15 @@
 import express from 'express';
+import socket from "socket.io";
+
 import { MessageModel } from '../models';
 
 class MessageController{
+    io: socket.Server;
+
+    constructor(io: socket.Server) {
+        this.io = io;
+    }
+
     async index(req: express.Request, res: express.Response){
         const dialogId = req.query.dialog;
         try{
@@ -24,7 +32,15 @@ class MessageController{
         message
             .save()
             .then(obj => {
-                res.json(obj);
+                obj.populate("dialog", (err: any, message: any) => {
+                    if (err) {
+                        return res.status(500).json({
+                            message: err
+                        });
+                    }
+                    res.json(message);
+                    this.io.emit("SERVER:NEW_MESSAGE", message);
+                });
             })
             .catch(reason => {
                 res.json(reason);

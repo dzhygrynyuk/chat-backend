@@ -1,4 +1,6 @@
 import express from "express";
+import { Server } from "socket.io";
+import { createServer } from "http";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import dotenv from 'dotenv';
@@ -8,15 +10,18 @@ import { updateLastSeen, checkAuth } from "./middlewares";
 import { loginValidation } from './utils/validations';
 
 const app = express();
+const http = createServer(app);
+const io = new Server(http);
+
 dotenv.config();
 
 app.use(bodyParser.json());
 app.use(updateLastSeen);
 app.use(checkAuth);
 
-const User = new UserController();
-const Dialog = new DialogController();
-const Message = new MessageController();
+const User = new UserController(io);
+const Dialog = new DialogController(io);
+const Message = new MessageController(io);
 
 mongoose
     .connect('mongodb+srv://dzhygrynyuk:QWVU2HHgWj5Ix8Xa@cluster0.j0r0tt8.mongodb.net/chat?retryWrites=true&w=majority')
@@ -37,6 +42,10 @@ app.get('/messages', Message.index);
 app.delete('/messages/:id', Message.delete);
 app.post('/messages', Message.create);
   
-app.listen(process.env.PORT, () => {
+http.listen(process.env.PORT, () => {
     console.log(`Example app listening on port ${process.env.PORT}`)
+});
+
+io.on('connection', (socket) => {
+    console.log('a user connected');
 });
