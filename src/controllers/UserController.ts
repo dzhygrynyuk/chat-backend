@@ -84,16 +84,23 @@ class UserController {
         try {
             const user: any = await UserModel.findOne({ email: postData.email });
 
-            if (user && bcrypt.compareSync(postData.password, user.password)) {
-                const token = createJWToken(user);
-                res.json({
-                    status: "success",
-                    token
-                });
+            if (user){
+                if (bcrypt.compareSync(postData.password, user.password)) {
+                    const token = createJWToken(user);
+                    res.json({
+                        status: "success",
+                        token
+                    });
+                } else {
+                    res.json({
+                        status: "error",
+                        message: "Incorrect password or email"
+                    });
+                }
             } else {
                 res.json({
                     status: "error",
-                    message: "Incorrect password or email"
+                    message: "User not found."
                 });
             }
         } catch (error) {
