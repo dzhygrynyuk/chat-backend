@@ -92,13 +92,13 @@ class UserController {
                         token
                     });
                 } else {
-                    res.json({
+                    res.status(404).json({
                         status: "error",
                         message: "Incorrect password or email"
                     });
                 }
             } else {
-                res.json({
+                res.status(404).json({
                     status: "error",
                     message: "User not found."
                 });

@@ -4,6 +4,7 @@ import { createServer } from "http";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import dotenv from 'dotenv';
+import cors from 'cors';
 
 import { UserController, DialogController, MessageController } from "./controllers";
 import { updateLastSeen, checkAuth } from "./middlewares";
@@ -15,6 +16,7 @@ const io = new Server(http);
 
 dotenv.config();
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(updateLastSeen);
 app.use(checkAuth);
